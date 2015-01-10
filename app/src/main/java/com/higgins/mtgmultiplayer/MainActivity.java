@@ -64,18 +64,22 @@ public class MainActivity extends ActionBarActivity
         //I will continue looking for a better fix for this, but as it stands
         //this works well enough.
         if(archenemyFragment == null) {
-            archenemyFragment = DeckFragment.newInstance("archenemy_hi_res");
+            archenemyFragment = DeckFragment.newInstance("archenemy");
         }
         if(planechaseFragment == null) {
-            planechaseFragment = DeckFragment.newInstance("planechase_hi_res");
+            planechaseFragment = DeckFragment.newInstance("planechase");
         }
 
-
+        ActionBar actionBar = getSupportActionBar();
         if(position == 0) {
+            mTitle = "Archenemy";
+            actionBar.setTitle(mTitle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, archenemyFragment)
                     .commit();
         } else if (position == 1) {
+            mTitle = "Planechase";
+            actionBar.setTitle(mTitle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, planechaseFragment)
                     .commit();
@@ -83,14 +87,12 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
-            case 0:
-                mTitle = getString(R.string.title_archenemy);
-                break;
-            case 1:
-                mTitle = getString(R.string.title_planechase);
-                break;
-        }
+        Log.v(LOG_TAG, Integer.toString(number));
+//        Switch (number) {
+//            case 1:
+//                mTitle = "Archenemy";
+//                break;
+//        }
     }
 
     public void restoreActionBar() {
