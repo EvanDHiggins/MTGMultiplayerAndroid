@@ -126,7 +126,9 @@ public class DeckFragment extends Fragment{
 
         int id = item.getItemId();
         if(id == R.id.action_remove) {
-            
+            Log.v(LOG_TAG, Integer.toString(
+                    ((ViewPager)rootView.findViewById(R.id.deck_view_pager))
+                            .getCurrentItem()));
         } else if (id == R.id.action_shuffle) {
             deck.shuffle();
             BitmapGetterTask bitGTask = new BitmapGetterTask(

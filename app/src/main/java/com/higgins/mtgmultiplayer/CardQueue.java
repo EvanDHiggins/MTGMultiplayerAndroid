@@ -10,6 +10,8 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -26,20 +28,16 @@ public class CardQueue{
     private final String LOG_TAG =CardQueue.class.getSimpleName();
 
     AssetManager assetManager;
-    String[] cardNamesList;
+    ArrayList<String> cardNamesList;
     String folderPath;
-
-    //Indicates index of current card
-    int currentCardIndicator;
 
     public CardQueue(Context c, String folderName) {
 
         folderPath = folderName;
-        currentCardIndicator = 0;
         assetManager = c.getAssets();
 
         try {
-            cardNamesList = assetManager.list(folderName);
+            cardNamesList = new ArrayList<String>(Arrays.asList(assetManager.list(folderName)));
         } catch (IOException e) {
             Log.e(LOG_TAG, folderName + " Card list not generated");
         }
@@ -47,26 +45,18 @@ public class CardQueue{
     }
 
     public void shuffle() {
-        Collections.shuffle(Arrays.asList(cardNamesList));
-    }
-
-    /**
-     * Returns cardpath.jpg of current card
-     * @return
-     */
-    public String getCardPath() {
-        return cardNamesList[currentCardIndicator];
+        Collections.shuffle(cardNamesList);
     }
 
     public int getQueueLength() {
-        return cardNamesList.length;
+        return cardNamesList.size();
     }
 
     public Bitmap getCardBitmap(int position) {
         Bitmap cardImage = null;
         try {
             InputStream inputS = assetManager.open(folderPath + File.separator +
-                    cardNamesList[position]);
+                    cardNamesList.get(position));
             cardImage = BitmapFactory.decodeStream(inputS);
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException");
@@ -79,17 +69,13 @@ public class CardQueue{
         return cardImage;
     }
 
-    public void next() {
-        currentCardIndicator++;
-        if(currentCardIndicator >= cardNamesList.length) {
-            currentCardIndicator = 0;
-        }
+    public void remove(int position) {
+        cardNamesList.remove(position);
     }
 
     /** Strictly for debugging purposes
      *
      *  Prints out strings as verbose logs
-     *  Strictly for debuggin purposes
      *
      * @param array
      */
