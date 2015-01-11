@@ -64,10 +64,10 @@ public class MainActivity extends ActionBarActivity
         //I will continue looking for a better fix for this, but as it stands
         //this works well enough.
         if(archenemyFragment == null) {
-            archenemyFragment = DeckFragment.newInstance("archenemy");
+            archenemyFragment = DeckFragment.newInstance("arch_placeholder");
         }
         if(planechaseFragment == null) {
-            planechaseFragment = DeckFragment.newInstance("planechase");
+            planechaseFragment = DeckFragment.newInstance("plan_placeholder");
         }
 
         ActionBar actionBar = getSupportActionBar();

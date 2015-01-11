@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -83,9 +85,9 @@ public class DeckFragment extends Fragment{
         if (deck == null) {
             deck = new CardQueue(getActivity(), folderName);
         }
-        if (planeDeckImageAdapter == null) {
-            planeDeckImageAdapter = new DeckImageAdapter(getActivity(), deck);
-        }
+//        if (planeDeckImageAdapter == null) {
+//            planeDeckImageAdapter = new DeckImageAdapter(getActivity(), deck);
+//        }
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -105,12 +107,10 @@ public class DeckFragment extends Fragment{
         //Renders the main view as designated in the fragment_deck layout
         rootView = inflater.inflate(R.layout.fragment_deck, container, false);
 
-        //Creates a gallery style ImageView
-        ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.deck_view_pager);
-
         //The adapter loads bitmaps, and thus should handle itself on
         //A seperate thread. The AsyncTask BitmapGetterTask handles this
-        BitmapGetterTask bitGTask = new BitmapGetterTask(viewPager);
+        BitmapGetterTask bitGTask = new BitmapGetterTask(
+                (ViewPager) rootView.findViewById(R.id.deck_view_pager));
         bitGTask.execute(getActivity(), deck);
 
         return rootView;
@@ -119,6 +119,21 @@ public class DeckFragment extends Fragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.deck_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if(id == R.id.action_remove) {
+            
+        } else if (id == R.id.action_shuffle) {
+            deck.shuffle();
+            BitmapGetterTask bitGTask = new BitmapGetterTask(
+                    (ViewPager)rootView.findViewById(R.id.deck_view_pager));
+            bitGTask.execute(getActivity(), deck);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

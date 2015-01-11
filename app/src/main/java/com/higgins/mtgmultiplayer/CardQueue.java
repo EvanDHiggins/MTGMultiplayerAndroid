@@ -36,9 +36,6 @@ public class CardQueue{
 
         folderPath = folderName;
         currentCardIndicator = 0;
-        if(c == null) {
-            Log.v(LOG_TAG, "c == null");
-        }
         assetManager = c.getAssets();
 
         try {
@@ -46,7 +43,10 @@ public class CardQueue{
         } catch (IOException e) {
             Log.e(LOG_TAG, folderName + " Card list not generated");
         }
+        shuffle();
+    }
 
+    public void shuffle() {
         Collections.shuffle(Arrays.asList(cardNamesList));
     }
 
