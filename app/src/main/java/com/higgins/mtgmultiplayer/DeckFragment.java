@@ -29,7 +29,7 @@ public class DeckFragment extends Fragment{
     String folderName;
     CardQueue deck;
     View rootView;
-    DeckImageAdapter planeDeckImageAdapter;
+    ViewPager deckView;
 
     /**
      * Static constructor that assigns a folder name and returns a new
@@ -85,9 +85,6 @@ public class DeckFragment extends Fragment{
         if (deck == null) {
             deck = new CardQueue(getActivity(), folderName);
         }
-//        if (planeDeckImageAdapter == null) {
-//            planeDeckImageAdapter = new DeckImageAdapter(getActivity(), deck);
-//        }
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -109,9 +106,7 @@ public class DeckFragment extends Fragment{
 
         //The adapter loads bitmaps, and thus should handle itself on
         //A seperate thread. The AsyncTask BitmapGetterTask handles this
-        BitmapGetterTask bitGTask = new BitmapGetterTask(
-                (ViewPager) rootView.findViewById(R.id.deck_view_pager));
-        bitGTask.execute(getActivity(), deck);
+        createAdapter();
 
         return rootView;
     }
@@ -126,16 +121,27 @@ public class DeckFragment extends Fragment{
 
         int id = item.getItemId();
         if(id == R.id.action_remove) {
-            Log.v(LOG_TAG, Integer.toString(
-                    ((ViewPager)rootView.findViewById(R.id.deck_view_pager))
-                            .getCurrentItem()));
+            int currentItem = deckView.getCurrentItem();
+            deck.remove(currentItem);
+            deckView.getAdapter().notifyDataSetChanged();
+            if(currentItem <= deck.getQueueLength()) {
+                deckView.setCurrentItem(currentItem);
+            } else {
+                deckView.setCurrentItem(currentItem - 1);
+            }
+
+
         } else if (id == R.id.action_shuffle) {
             deck.shuffle();
-            BitmapGetterTask bitGTask = new BitmapGetterTask(
-                    (ViewPager)rootView.findViewById(R.id.deck_view_pager));
-            bitGTask.execute(getActivity(), deck);
+            createAdapter();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createAdapter() {
+        deckView = (ViewPager)rootView.findViewById(R.id.deck_view_pager);
+        BitmapGetterTask bitGTask = new BitmapGetterTask(deckView);
+        bitGTask.execute(getActivity(), deck);
     }
 
     /**
