@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        //mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -74,7 +74,6 @@ public class MainActivity extends ActionBarActivity
         if(position == 0) {
             //Sets the action bar title to the name of the current fragment
             mTitle = getString(R.string.title_archenemy);
-            actionBar.setTitle(mTitle);
 
             //Replaces the current fragment with the archenemyFragment
             fragmentManager.beginTransaction()
@@ -82,7 +81,6 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         } else if (position == 1) {
             mTitle = getString(R.string.title_planechase);
-            actionBar.setTitle(mTitle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, planechaseFragment)
                     .commit();
