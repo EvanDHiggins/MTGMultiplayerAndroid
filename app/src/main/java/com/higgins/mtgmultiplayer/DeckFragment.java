@@ -121,13 +121,22 @@ public class DeckFragment extends Fragment{
 
         int id = item.getItemId();
         if(id == R.id.action_remove) {
+            //Finds the current position off the viewPager to adjust it once the
+            //current item is deleted
             int currentItem = deckView.getCurrentItem();
             deck.remove(currentItem);
+
+            //This ensures that the viewPager "knows" when it needs to update itself
             deckView.getAdapter().notifyDataSetChanged();
+
+            //The view pager doesn't move when an item is deleted,
+            //but rather all items beyond that are moved to the left
+            //one space. If the viewPager is at the end, though, it has
+            // to move back one space
             if(currentItem <= deck.getQueueLength()) {
-                deckView.setCurrentItem(currentItem);
+                deckView.setCurrentItem(currentItem, false);
             } else {
-                deckView.setCurrentItem(currentItem - 1);
+                deckView.setCurrentItem(currentItem - 1, false);
             }
 
 
@@ -135,7 +144,6 @@ public class DeckFragment extends Fragment{
             deck.shuffle();
             deckView.getAdapter().notifyDataSetChanged();
             deckView.setCurrentItem(0, true);
-            //createAdapter();
         }
         return super.onOptionsItemSelected(item);
     }

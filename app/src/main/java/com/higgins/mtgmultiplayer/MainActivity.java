@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity
         //TODO: Figure out how to move DeckFragment initialization to onCreate()
         //These null checks ensure that the DeckFragments aren't recreated
         //replacing current position and card order. This has actually been
-        //a source of issue since Google Resources indicate that this should
+        //a source of issue since Google Developer resources indicate that this should
         //be done in the onCreate method, but since that method loads the
         //navigation drawer it crashes the application immediately as it runs.
         //I will continue looking for a better fix for this, but as it stands
@@ -72,13 +72,16 @@ public class MainActivity extends ActionBarActivity
 
         ActionBar actionBar = getSupportActionBar();
         if(position == 0) {
-            mTitle = "Archenemy";
+            //Sets the action bar title to the name of the current fragment
+            mTitle = getString(R.string.title_archenemy);
             actionBar.setTitle(mTitle);
+
+            //Replaces the current fragment with the archenemyFragment
             fragmentManager.beginTransaction()
                     .replace(R.id.container, archenemyFragment)
                     .commit();
         } else if (position == 1) {
-            mTitle = "Planechase";
+            mTitle = getString(R.string.title_planechase);
             actionBar.setTitle(mTitle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, planechaseFragment)
