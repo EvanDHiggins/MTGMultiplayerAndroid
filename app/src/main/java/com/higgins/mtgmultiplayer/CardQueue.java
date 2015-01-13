@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import java.io.File;
@@ -54,10 +55,22 @@ public class CardQueue{
 
     public Bitmap getCardBitmap(int position) {
         Bitmap cardImage = null;
+        Bitmap rotatedBitmap = null;
         try {
+
+
             InputStream inputS = assetManager.open(folderPath + File.separator +
                     cardNamesList.get(position));
             cardImage = BitmapFactory.decodeStream(inputS);
+
+            if(folderPath.contains("planechase")) {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                rotatedBitmap = Bitmap.createBitmap(cardImage, 0, 0,
+                        cardImage.getWidth(), cardImage.getHeight(), matrix, true);
+                cardImage = rotatedBitmap;
+            }
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException");
             e.printStackTrace();
