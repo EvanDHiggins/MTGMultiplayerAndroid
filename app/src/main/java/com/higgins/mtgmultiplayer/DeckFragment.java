@@ -133,7 +133,9 @@ public class DeckFragment extends Fragment{
 
         } else if (id == R.id.action_shuffle) {
             deck.shuffle();
-            createAdapter();
+            deckView.getAdapter().notifyDataSetChanged();
+            deckView.setCurrentItem(0, true);
+            //createAdapter();
         }
         return super.onOptionsItemSelected(item);
     }

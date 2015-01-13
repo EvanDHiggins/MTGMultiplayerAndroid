@@ -64,10 +64,10 @@ public class MainActivity extends ActionBarActivity
         //I will continue looking for a better fix for this, but as it stands
         //this works well enough.
         if(archenemyFragment == null) {
-            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy_hi_res));
+            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy));
         }
         if(planechaseFragment == null) {
-            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase_hi_res));
+            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase));
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -88,11 +88,6 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         Log.v(LOG_TAG, Integer.toString(number));
-//        Switch (number) {
-//            case 1:
-//                mTitle = "Archenemy";
-//                break;
-//        }
     }
 
     public void restoreActionBar() {
