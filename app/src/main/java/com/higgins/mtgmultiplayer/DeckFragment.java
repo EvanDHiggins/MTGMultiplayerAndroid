@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class DeckFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //TODO: Figure out why these statements are needed
+        super.onCreate(savedInstanceState);
         //It is my understanding that onCreate only happens one time,
         //but if these null checks aren't here then these objects
         //are created each time the fragment is loaded.
@@ -86,7 +88,6 @@ public class DeckFragment extends Fragment{
             deck = new CardQueue(getActivity(), folderName);
         }
 
-        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -110,6 +111,19 @@ public class DeckFragment extends Fragment{
         createAdapter();
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("CURRENT_ITEM", deckView.getCurrentItem());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+
     }
 
     @Override
