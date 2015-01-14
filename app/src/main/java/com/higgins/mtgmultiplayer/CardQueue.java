@@ -63,14 +63,6 @@ public class CardQueue{
                     cardNamesList.get(position));
             cardImage = BitmapFactory.decodeStream(inputS);
 
-            if(folderPath.contains("planechase")) {
-                Matrix matrix = new Matrix();
-                matrix.postRotate(90);
-                rotatedBitmap = Bitmap.createBitmap(cardImage, 0, 0,
-                        cardImage.getWidth(), cardImage.getHeight(), matrix, true);
-                cardImage = rotatedBitmap;
-            }
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException");
             e.printStackTrace();

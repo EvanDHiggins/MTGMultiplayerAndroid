@@ -88,6 +88,7 @@ public class DeckFragment extends Fragment{
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
 
     /**
