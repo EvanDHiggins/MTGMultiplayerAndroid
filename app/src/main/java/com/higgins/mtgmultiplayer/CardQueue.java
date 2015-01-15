@@ -24,7 +24,7 @@ import java.util.Collections;
  * of card names. Several get methods expose the image paths
  * and card names of each item in the queue.
  */
-public class CardQueue{
+public class CardQueue {
 
     private final String LOG_TAG =CardQueue.class.getSimpleName();
 
@@ -55,14 +55,10 @@ public class CardQueue{
 
     public Bitmap getCardBitmap(int position) {
         Bitmap cardImage = null;
-        Bitmap rotatedBitmap = null;
         try {
-
-
             InputStream inputS = assetManager.open(folderPath + File.separator +
                     cardNamesList.get(position));
             cardImage = BitmapFactory.decodeStream(inputS);
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException");
             e.printStackTrace();

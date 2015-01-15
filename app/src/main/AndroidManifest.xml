@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <instrumentation
+            android:targetPackage="com.higgins.mtgmultiplayer.test"
+            android:name="android.test.InstrumentationTestRunner" />
     </application>
 
 </manifest>

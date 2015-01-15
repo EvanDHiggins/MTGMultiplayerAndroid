@@ -1,17 +1,12 @@
 package com.higgins.mtgmultiplayer;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 
@@ -70,7 +65,6 @@ public class MainActivity extends ActionBarActivity
             planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase));
         }
 
-        ActionBar actionBar = getSupportActionBar();
         if(position == 0) {
             //Sets the action bar title to the name of the current fragment
             mTitle = getString(R.string.title_archenemy);

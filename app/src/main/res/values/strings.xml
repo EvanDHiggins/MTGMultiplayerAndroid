@@ -12,6 +12,7 @@
         <string name="folder_planechase">planechase</string>
         <string name="folder_archenemy_hi_res">archenemy_hi_res</string>
         <string name="folder_planechase_hi_res">planechase_hi_res</string>
+        <string name="folder_test">test_folder</string>
 
 
         <string name="navigation_drawer_open">Open navigation drawer</string>
