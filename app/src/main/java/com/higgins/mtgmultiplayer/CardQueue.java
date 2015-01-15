@@ -34,13 +34,16 @@ public class CardQueue {
 
         folderPath = folderName;
         assetManager = c.getAssets();
-
-        try {
-            cardNamesList = new ArrayList<String>(Arrays.asList(assetManager.list(folderName)));
-        } catch (IOException e) {
-            Log.e(LOG_TAG, folderName + " Card list not generated");
-        }
+        loadCardNamesList();
         shuffle();
+    }
+
+    public void loadCardNamesList() {
+        try {
+            cardNamesList = new ArrayList<String>(Arrays.asList(assetManager.list(folderPath)));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, folderPath + " Card list not generated");
+        }
     }
 
     public void shuffle() {

@@ -65,19 +65,31 @@ public class MainActivity extends ActionBarActivity
             planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase_hi_res));
         }
 
-        if(position == 0) {
-            //Sets the action bar title to the name of the current fragment
-            mTitle = getString(R.string.title_archenemy);
+        switch(position) {
+            case 0:
+                //Sets the action bar title to the name of the current fragment
+                mTitle = getString(R.string.title_archenemy);
 
-            //Replaces the current fragment with the archenemyFragment
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, archenemyFragment)
-                    .commit();
-        } else if (position == 1) {
-            mTitle = getString(R.string.title_planechase);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, planechaseFragment)
-                    .commit();
+                //Replaces the current fragment with the archenemyFragment
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, archenemyFragment)
+                        .commit();
+                break;
+
+            case 1:
+                mTitle = getString(R.string.title_planechase);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, planechaseFragment)
+                        .commit();
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
         }
     }
 

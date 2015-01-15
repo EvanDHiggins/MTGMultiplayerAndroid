@@ -6,6 +6,8 @@
         <!--Navigation drawer option names-->
         <string name="title_archenemy">Archenemy</string>
         <string name="title_planechase">Planechase</string>
+        <string name="title_save">Save</string>
+        <string name="title_load">Load</string>
 
         <!-- Folder name strings -->
         <string name="folder_archenemy">archenemy</string>
@@ -21,6 +23,6 @@
         <string name="action_remove">Remove</string>
         <string name="action_shuffle">Shuffle</string>
         <string name="action_settings">Settings</string>
-        <string name="hello_blank_fragment">Hello blank fragment</string>
+        <string name="action_reset">Reset</string>
 
     </resources>
