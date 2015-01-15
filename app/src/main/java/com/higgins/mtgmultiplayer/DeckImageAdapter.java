@@ -27,9 +27,6 @@ public class DeckImageAdapter extends PagerAdapter {
     public DeckImageAdapter(Context context, CardQueue cardQueue){
         deck = cardQueue;
         this.context=context;
-        if(this.context == null) {
-            Log.v(LOG_TAG, "null context");
-        }
     }
 
     @Override
