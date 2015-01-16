@@ -3,6 +3,7 @@ package com.higgins.mtgmultiplayer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -15,10 +16,12 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.EditText;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -75,10 +78,10 @@ public class MainActivity extends ActionBarActivity
         //I will continue looking for a better fix for this, but as it stands
         //this works well enough.
         if(archenemyFragment == null) {
-            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy));
+            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy_hi_res));
         }
         if(planechaseFragment == null) {
-            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase));
+            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase_hi_res));
         }
 
         switch(position) {
@@ -109,6 +112,16 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+
+
+
+
+
+
+
+
+    
+
     private void loadDeck() {
         String deckName;
         List<String> deckList;
@@ -118,7 +131,10 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         DeckFragment fragment = (DeckFragment) fragmentManager.findFragmentById(R.id.container);
         fragment.setDeckList(deckList);
-        ((ViewPager)findViewById(R.id.deck_view_pager)).getAdapter().notifyDataSetChanged();
+        ViewPager deckView = (ViewPager) findViewById(R.id.deck_view_pager);
+        PagerAdapter adapter = deckView.getAdapter();
+        adapter.notifyDataSetChanged();
+        deckView.setCurrentItem(0);
     }
 
     private String loadDeckDialog() {
@@ -132,17 +148,20 @@ public class MainActivity extends ActionBarActivity
         String deckString = null;
 
         try {
-            fis = openFileInput("NewDeck6.txt");
-            DataInputStream dataIO = new DataInputStream(fis);
-            String strLine = null;
+            FileInputStream openFile = openFileInput("NewDeck6.txt");
+            InputStreamReader reader = new InputStreamReader(openFile);
+            BufferedReader buffReader = new BufferedReader(reader);
 
-            while((strLine = dataIO.readLine()) != null) {
+            String strLine;
+
+            while((strLine = buffReader.readLine()) != null) {
                 storedString.append(strLine + ",");
             }
             deckString = storedString.toString();
+            deckString.replace("\n", "");
 
-            dataIO.close();
-            fis.close();
+            buffReader.close();
+            openFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,6 +216,16 @@ public class MainActivity extends ActionBarActivity
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
