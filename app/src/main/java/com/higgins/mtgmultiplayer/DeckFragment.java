@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Evan on 1/9/2015.
@@ -57,6 +58,18 @@ public class DeckFragment extends Fragment{
         this.folderName = folderName;
     }
 
+    public CardQueue getDeck() {
+        return deck;
+    }
+
+    public List<String> getDeckAsList() {
+        return deck.getCardNamesList();
+    }
+
+    public void setDeckList(List<String> newDeckList) {
+        deck.setDeckList(newDeckList);
+    }
+
     /**
      * OnAttach is the first action that happens when a fragment is created.
      * It attaches the action to the current activity. If getActivity() is called
@@ -67,7 +80,7 @@ public class DeckFragment extends Fragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(1);
+        //((MainActivity) activity).onSectionAttached(1);
     }
 
     /**
@@ -117,13 +130,6 @@ public class DeckFragment extends Fragment{
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("CURRENT_ITEM", deckView.getCurrentItem());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-
     }
 
     @Override

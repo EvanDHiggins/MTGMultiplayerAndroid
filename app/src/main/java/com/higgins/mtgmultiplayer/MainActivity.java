@@ -1,13 +1,29 @@
 package com.higgins.mtgmultiplayer;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.EditText;
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
@@ -59,10 +75,10 @@ public class MainActivity extends ActionBarActivity
         //I will continue looking for a better fix for this, but as it stands
         //this works well enough.
         if(archenemyFragment == null) {
-            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy_hi_res));
+            archenemyFragment = DeckFragment.newInstance(getString(R.string.folder_archenemy));
         }
         if(planechaseFragment == null) {
-            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase_hi_res));
+            planechaseFragment = DeckFragment.newInstance(getString(R.string.folder_planechase));
         }
 
         switch(position) {
@@ -84,17 +100,102 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 2:
-
+                saveDeckDialog();
                 break;
 
             case 3:
-
+                loadDeck();
                 break;
         }
     }
 
-    public void onSectionAttached(int number) {
-        Log.v(LOG_TAG, Integer.toString(number));
+    private void loadDeck() {
+        String deckName;
+        List<String> deckList;
+        deckName = loadDeckDialog();
+        deckList = loadDeckFromFile();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DeckFragment fragment = (DeckFragment) fragmentManager.findFragmentById(R.id.container);
+        fragment.setDeckList(deckList);
+        ((ViewPager)findViewById(R.id.deck_view_pager)).getAdapter().notifyDataSetChanged();
+    }
+
+    private String loadDeckDialog() {
+        return null;
+    }
+
+    private List<String> loadDeckFromFile() {
+        FileInputStream fis;
+        final StringBuffer storedString = new StringBuffer();
+        List<String> newDeckList = null;
+        String deckString = null;
+
+        try {
+            fis = openFileInput("NewDeck6.txt");
+            DataInputStream dataIO = new DataInputStream(fis);
+            String strLine = null;
+
+            while((strLine = dataIO.readLine()) != null) {
+                storedString.append(strLine + ",");
+            }
+            deckString = storedString.toString();
+
+            dataIO.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(deckString != null) {
+            newDeckList = Arrays.asList(deckString.split("\\s*,\\s*"));
+        }
+        return newDeckList;
+    }
+
+    private void saveDeckDialog() {
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Save Deck");
+
+        //Text field to type in name
+        final EditText input = new EditText(this);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        alertBuilder.setView(input);
+
+        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.v(LOG_TAG, "OK was pressed");
+                writeDeckToDevice(input.getText().toString());
+            }
+        });
+        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertBuilder.show();
+    }
+
+    private void writeDeckToDevice(String deckName) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        DeckFragment deckFragment = (DeckFragment)fragmentManager.findFragmentById(R.id.container);
+        Log.v(LOG_TAG, deckName);
+        List<String> deckList = deckFragment.getDeckAsList();
+        try {
+            OutputStreamWriter output = new OutputStreamWriter(
+                    openFileOutput(deckName + ".txt", 0));
+            for(String cardName : deckList) {
+                output.write(cardName + "\n");
+            }
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void restoreActionBar() {

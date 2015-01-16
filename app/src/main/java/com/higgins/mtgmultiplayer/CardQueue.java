@@ -15,6 +15,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Evan on 1/8/2015.
@@ -29,7 +30,7 @@ public class CardQueue {
     private final String LOG_TAG =CardQueue.class.getSimpleName();
 
     AssetManager assetManager;
-    ArrayList<String> cardNamesList;
+    List<String> cardNamesList;
     String folderPath;
     Bitmap cardImage;
 
@@ -43,7 +44,7 @@ public class CardQueue {
 
     public void loadCardNamesList() {
         try {
-            cardNamesList = new ArrayList<String>(Arrays.asList(assetManager.list(folderPath)));
+            cardNamesList = new ArrayList<>(Arrays.asList(assetManager.list(folderPath)));
         } catch (IOException e) {
             Log.e(LOG_TAG, folderPath + " Card list not generated");
         }
@@ -57,23 +58,31 @@ public class CardQueue {
         return cardNamesList.size();
     }
 
+    public List<String> getCardNamesList() {
+        return cardNamesList;
+    }
+
+    public void setDeckList(List<String> newCardNamesList) {
+        cardNamesList = newCardNamesList;
+    }
+
     public Bitmap getCardBitmap(int position) {
         Bitmap cardImage = null;
-        BitmapGetterTask task = new BitmapGetterTask(assetManager, folderPath,
-                cardNamesList.get(position), cardImage);
-//        try {
-//            InputStream inputS = assetManager.open(folderPath + File.separator +
-//                    cardNamesList.get(position));
-//            cardImage = BitmapFactory.decodeStream(inputS);
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "IOException");
-//            e.printStackTrace();
-//        } finally {
-//            if (cardImage == null) {
-//                Log.e(LOG_TAG, "Error, null cardImage");
-//            }
-//        }
-        task.execute();
+//        BitmapGetterTask task = new BitmapGetterTask(assetManager, folderPath,
+//                cardNamesList.get(position));
+//        task.execute();
+        try {
+            InputStream inputS = assetManager.open(folderPath + File.separator +
+                    cardNamesList.get(position));
+            cardImage = BitmapFactory.decodeStream(inputS);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "IOException");
+            e.printStackTrace();
+        } finally {
+            if (cardImage == null) {
+                Log.e(LOG_TAG, "Error, null cardImage");
+            }
+        }
         return cardImage;
     }
 
@@ -100,23 +109,21 @@ public class CardQueue {
         AssetManager aManager;
         String folderName;
         String cardName;
-        WeakReference<Bitmap> cardImage;
 
-        public BitmapGetterTask(AssetManager assetManager, String folderPath, String cardName, Bitmap cardImage) {
+        public BitmapGetterTask(AssetManager assetManager, String folderPath, String cardName) {
             aManager = assetManager;
             if(aManager == null) {
                 Log.v(LOG_TAG, "AssetManager is null");
             }
             folderName = folderPath;
             this.cardName = cardName;
-            this.cardImage = new WeakReference<Bitmap>(cardImage);
         }
 
         @Override
         protected Bitmap doInBackground(Void... params) {
             Bitmap cardImage = null;
             try {
-                InputStream inputS = assetManager.open(folderPath + File.separator +
+                InputStream inputS = aManager.open(folderName + File.separator +
                         cardName);
                 cardImage = BitmapFactory.decodeStream(inputS);
             } catch (IOException e) {
@@ -132,13 +139,8 @@ public class CardQueue {
         }
 
         @Override
-        protected void onPostExecute(Bitmap cardImage) {
-            Bitmap cardBitmap = this.cardImage.get();
-            if(cardBitmap != null) {
-                cardBitmap = cardImage;
-            } else {
-                Log.e(LOG_TAG, "cardBitmap is null");
-            }
+        protected void onPostExecute(Bitmap cardBitmap) {
+            cardImage = cardBitmap;
         }
     }
 }
