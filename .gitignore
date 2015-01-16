@@ -1,0 +1,6 @@
+.grade
+/local.properties
+/.idea/workspace.xml
+.DS_Store
+/build
+/app/src/main/assets/
