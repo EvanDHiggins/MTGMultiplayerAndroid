@@ -1,8 +1,11 @@
 package com.higgins.mtgmultiplayer;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.util.Log;
@@ -20,10 +23,16 @@ public class DeckWriter {
     private final String LOG_TAG = DeckWriter.class.getSimpleName();
 
     Context thisContext;
+    FragmentManager fragmentManager;
 
 
-    public DeckWriter(Context c) {
+    public DeckWriter(Context c, FragmentManager fragmentManager) {
         thisContext = c;
+        this.fragmentManager = fragmentManager;
+    }
+
+    public void saveDeck() {
+        saveDeckDialog();
     }
 
     private void saveDeckDialog() {
@@ -42,7 +51,6 @@ public class DeckWriter {
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.v(LOG_TAG, "OK was pressed");
                 writeDeckToDevice(input.getText().toString());
             }
         });
@@ -57,14 +65,12 @@ public class DeckWriter {
 
     private void writeDeckToDevice(String deckName) {
 
-        FragmentManager fragmentManager = thisContext.getSupportFragmentManager();
-
         DeckFragment deckFragment = (DeckFragment)fragmentManager.findFragmentById(R.id.container);
         Log.v(LOG_TAG, deckName);
         List<String> deckList = deckFragment.getDeckAsList();
         try {
             OutputStreamWriter output = new OutputStreamWriter(
-                    openFileOutput(deckName + ".txt", 0));
+                    thisContext.openFileOutput("deck_" + deckName + ".txt", 0));
             for(String cardName : deckList) {
                 output.write(cardName + "\n");
             }

@@ -103,8 +103,8 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 2:
-                DeckWriter deckWriter = new DeckWriter(this);
-                saveDeckDialog();
+                DeckWriter deckWriter = new DeckWriter(this, getSupportFragmentManager());
+                deckWriter.saveDeck();
                 break;
 
             case 3:
