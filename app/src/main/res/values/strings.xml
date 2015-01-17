@@ -16,6 +16,12 @@
         <string name="folder_planechase_hi_res">planechase_hi_res</string>
         <string name="folder_test">test_folder</string>
 
+        <!-- Delimits individual cards in saved deck file -->
+        <string name="saved_deck_delimiter">\n</string>
+        <string name="saved_deck_prefix">deck_</string>
+
+        <string name="alert_positive">OK</string>
+        <string name="alert_negative">Cancel</string>
 
         <string name="navigation_drawer_open">Open navigation drawer</string>
         <string name="navigation_drawer_close">Close navigation drawer</string>

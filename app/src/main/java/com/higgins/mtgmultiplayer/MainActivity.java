@@ -108,83 +108,11 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 3:
-                loadDeck();
+                DeckLoader deckLoader = new DeckLoader(this, getSupportFragmentManager());
+                deckLoader.loadDeckDialog();
                 break;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-    private void loadDeck() {
-        String deckName;
-        List<String> deckList;
-        deckName = loadDeckDialog();
-        deckList = loadDeckFromFile();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        DeckFragment fragment = (DeckFragment) fragmentManager.findFragmentById(R.id.container);
-        fragment.setDeckList(deckList);
-        ViewPager deckView = (ViewPager) findViewById(R.id.deck_view_pager);
-        PagerAdapter adapter = deckView.getAdapter();
-        adapter.notifyDataSetChanged();
-        deckView.setCurrentItem(0);
-    }
-
-    private String loadDeckDialog() {
-        return null;
-    }
-
-    private List<String> loadDeckFromFile() {
-        FileInputStream fis;
-        final StringBuffer storedString = new StringBuffer();
-        List<String> newDeckList = null;
-        String deckString = null;
-
-        try {
-            FileInputStream openFile = openFileInput("NewDeck6.txt");
-            InputStreamReader reader = new InputStreamReader(openFile);
-            BufferedReader buffReader = new BufferedReader(reader);
-
-            String strLine;
-
-            while((strLine = buffReader.readLine()) != null) {
-                storedString.append(strLine + ",");
-            }
-            deckString = storedString.toString();
-            deckString.replace("\n", "");
-
-            buffReader.close();
-            openFile.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(deckString != null) {
-            newDeckList = Arrays.asList(deckString.split("\\s*,\\s*"));
-        }
-        return newDeckList;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();

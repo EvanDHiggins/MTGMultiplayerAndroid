@@ -28,9 +28,16 @@ public class DeckWriter {
 
     public DeckWriter(Context c, FragmentManager fragmentManager) {
         thisContext = c;
+
+        //The Activities fragment manager is needed to get the current
+        //deck fragment so that the deck can be accessed and saved.
         this.fragmentManager = fragmentManager;
     }
 
+    /**
+     * saveDeck wraps all the necessary methods to save a deck into a single
+     * public call.
+     */
     public void saveDeck() {
         saveDeckDialog();
     }
@@ -40,21 +47,23 @@ public class DeckWriter {
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(thisContext);
         alertBuilder.setTitle("Save Deck");
 
-        //Text field to type in name
         final EditText input = new EditText(thisContext);
 
+        //Sets the text field type to normal text. i.e. not password field, multi-choice box, etc.
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         alertBuilder.setView(input);
 
         //Creates "ok" and "cancel" button which write the input string as the
         //deck name and cancel the dialog, respectively
-        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton(thisContext.getString(R.string.alert_positive),
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 writeDeckToDevice(input.getText().toString());
             }
         });
-        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertBuilder.setNegativeButton(thisContext.getString(R.string.alert_negative),
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -66,13 +75,15 @@ public class DeckWriter {
     private void writeDeckToDevice(String deckName) {
 
         DeckFragment deckFragment = (DeckFragment)fragmentManager.findFragmentById(R.id.container);
-        Log.v(LOG_TAG, deckName);
         List<String> deckList = deckFragment.getDeckAsList();
+
         try {
+            //Prepending "deck_" to the file name allows the loader to know what each text file is.
             OutputStreamWriter output = new OutputStreamWriter(
-                    thisContext.openFileOutput("deck_" + deckName + ".txt", 0));
+                    thisContext.openFileOutput(thisContext.getString(R.string.saved_deck_prefix)
+                            + deckName + ".txt", 0));
             for(String cardName : deckList) {
-                output.write(cardName + "\n");
+                output.write(cardName + thisContext.getString(R.string.saved_deck_delimiter));
             }
             output.close();
         } catch (IOException e) {
