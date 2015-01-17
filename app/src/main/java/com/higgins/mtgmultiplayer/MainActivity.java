@@ -103,6 +103,7 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 2:
+                DeckWriter deckWriter = new DeckWriter(this);
                 saveDeckDialog();
                 break;
 
@@ -120,7 +121,7 @@ public class MainActivity extends ActionBarActivity
 
 
 
-    
+
 
     private void loadDeck() {
         String deckName;
@@ -171,51 +172,9 @@ public class MainActivity extends ActionBarActivity
         return newDeckList;
     }
 
-    private void saveDeckDialog() {
 
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("Save Deck");
 
-        //Text field to type in name
-        final EditText input = new EditText(this);
 
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-        alertBuilder.setView(input);
-
-        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.v(LOG_TAG, "OK was pressed");
-                writeDeckToDevice(input.getText().toString());
-            }
-        });
-        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertBuilder.show();
-    }
-
-    private void writeDeckToDevice(String deckName) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        DeckFragment deckFragment = (DeckFragment)fragmentManager.findFragmentById(R.id.container);
-        Log.v(LOG_TAG, deckName);
-        List<String> deckList = deckFragment.getDeckAsList();
-        try {
-            OutputStreamWriter output = new OutputStreamWriter(
-                    openFileOutput(deckName + ".txt", 0));
-            for(String cardName : deckList) {
-                output.write(cardName + "\n");
-            }
-            output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
