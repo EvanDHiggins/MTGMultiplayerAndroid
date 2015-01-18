@@ -12,6 +12,22 @@ import java.util.List;
 
 /**
  * Created by EvanHiggins on 1/16/15.
+ *
+ * Writes a planechase/archenemy decklist to a .txt file on internal storage.
+ *
+ * Methods:
+ *
+ * saveDeck(): Public method to abstract what the writer is doing. Just calls saveDeckDialog()
+ * public
+ * void
+ *
+ * saveDeckDialog(): Creates and shows a dialog prompting the user for a file name.
+ * private           When the positive button is pressed writeDeckToDevice() is called.
+ * void
+ *
+ * writeDeckToDevice(String deckName): Writes a .txt file to the device with each card name
+ * private                             taking up a seperate line.
+ * void
  */
 public class DeckWriter {
 
@@ -74,7 +90,8 @@ public class DeckWriter {
         List<String> deckList = deckFragment.getDeckAsList();
 
         try {
-            //Prepending "deck_" to the file name allows the loader to know what each text file is.
+            //Prepending folder name to the file name allows the loader to distinguish between
+            //each type of deck.
             OutputStreamWriter output = new OutputStreamWriter(
                     thisContext.openFileOutput(deckTag + deckName + ".txt", 0));
             for(String cardName : deckList) {
