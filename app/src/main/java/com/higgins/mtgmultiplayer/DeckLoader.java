@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,28 +23,38 @@ public class DeckLoader {
     final private String LOG_TAG = DeckLoader.class.getSimpleName();
 
     private Context thisContext;
-    private List<String> fileNames;
+    private ArrayList<String> fileNames;
     private DeckFragment deckFragment;
+    private String deckTag;
 
-    public DeckLoader(Context c, DeckFragment f) {
+    public DeckLoader(Context c, DeckFragment f, String folderName) {
         thisContext = c;
         deckFragment = f;
+        this.deckTag = (new StringBuilder(folderName).append("_").toString());
+        Log.v(LOG_TAG, "deckTag == " + deckTag);
     }
 
     public void loadDeckDialog() {
-        fileNames = Arrays.asList(thisContext.fileList());
+        fileNames = new ArrayList<>(Arrays.asList(thisContext.fileList()));
 
         //Removes any files that don't have the proper prefix, and removes the prefix
         //From those which have it.
-        for(String file : fileNames) {
-            if(file.startsWith(thisContext.getString(R.string.saved_deck_prefix))) {
+        Log.v(LOG_TAG, Integer.toString(fileNames.size()));
+        Iterator<String> iter = fileNames.iterator();
+        while(iter.hasNext()) {
+            String file = iter.next();
+            if(file.startsWith(deckTag)) {
                 int index = fileNames.indexOf(file);
-                fileNames.set(index, file.replaceFirst("deck_", ""));
+                fileNames.set(index, file.replaceFirst(deckTag, ""));
             } else {
-                fileNames.remove(file);
+                iter.remove();
             }
-            Log.v(LOG_TAG, file);
         }
+        //for(String file : fileNames) {
+//        for(int i = 0; i < fileNames.size(); i++) {
+//            file = fileNames.get(i);
+//
+//        }
         Collections.sort(fileNames);
         //Conversion to charSequence is due to alertBuilder.setItems parameters
         CharSequence[] fileCharSeqs = fileNames.toArray(new CharSequence[fileNames.size()]);
@@ -78,8 +89,8 @@ public class DeckLoader {
         String deckString = null;
 
         try {
-            FileInputStream openFile = thisContext.openFileInput(
-                    thisContext.getString(R.string.saved_deck_prefix) + deckName);
+            FileInputStream openFile = thisContext.openFileInput(deckTag + deckName);
+
             InputStreamReader reader = new InputStreamReader(openFile);
             BufferedReader buffReader = new BufferedReader(reader);
 

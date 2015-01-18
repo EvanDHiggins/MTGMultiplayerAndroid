@@ -19,11 +19,13 @@ public class DeckWriter {
 
     Context thisContext;
     DeckFragment deckFragment;
+    String deckTag;
 
 
-    public DeckWriter(Context c, DeckFragment deckFragment) {
+    public DeckWriter(Context c, DeckFragment deckFragment, String folderName) {
         thisContext = c;
         this.deckFragment = deckFragment;
+        deckTag = folderName + "_";
 
         //The Activities fragment manager is needed to get the current
         //deck fragment so that the deck can be accessed and saved.
@@ -74,8 +76,7 @@ public class DeckWriter {
         try {
             //Prepending "deck_" to the file name allows the loader to know what each text file is.
             OutputStreamWriter output = new OutputStreamWriter(
-                    thisContext.openFileOutput(thisContext.getString(R.string.saved_deck_prefix)
-                            + deckName + ".txt", 0));
+                    thisContext.openFileOutput(deckTag + deckName + ".txt", 0));
             for(String cardName : deckList) {
                 output.write(cardName + thisContext.getString(R.string.saved_deck_delimiter));
             }

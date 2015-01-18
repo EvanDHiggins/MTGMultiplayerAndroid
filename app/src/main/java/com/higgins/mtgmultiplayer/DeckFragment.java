@@ -82,12 +82,12 @@ public class DeckFragment extends Fragment{
     }
 
     public void saveDeck() {
-        DeckWriter writer = new DeckWriter(getActivity(), this);
+        DeckWriter writer = new DeckWriter(getActivity(), this, folderName);
         writer.saveDeck();
     }
 
     public void loadDeck() {
-        DeckLoader loader = new DeckLoader(getActivity(), this);
+        DeckLoader loader = new DeckLoader(getActivity(), this, folderName);
         loader.loadDeckDialog();
     }
 
