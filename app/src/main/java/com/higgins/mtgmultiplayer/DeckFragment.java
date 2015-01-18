@@ -140,6 +140,8 @@ public class DeckFragment extends Fragment{
         //Renders the main view as designated in the fragment_deck layout
         rootView = inflater.inflate(R.layout.fragment_deck, container, false);
 
+        deckView = (ViewPager)rootView.findViewById(R.id.deck_view_pager);
+
         //The adapter loads bitmaps, and thus should handle itself on
         //A seperate thread. The AsyncTask BitmapGetterTask handles this
         createAdapter();
@@ -199,53 +201,8 @@ public class DeckFragment extends Fragment{
     }
 
     private void createAdapter() {
-        deckView = (ViewPager)rootView.findViewById(R.id.deck_view_pager);
-        BitmapGetterTask bitGTask = new BitmapGetterTask(deckView);
-        bitGTask.execute(getActivity(), deck);
-    }
 
-    /**
-     * Since the plane/scheme images are loaded from bitmaps, they should
-     * be handled on a seperate thread. This AsyncTask creates a DeckImageAdapter
-     * for the ViewPager.
-     *
-     * Object[0] Context: Context containing desired view
-     * Object[1] CardQueue: CardQueue used to fetch card images
-     */
-    private class BitmapGetterTask extends AsyncTask<Object, Void, DeckImageAdapter> {
-
-        private final String LOG_TAG = BitmapGetterTask.class.getSimpleName();
-
-        private WeakReference<ViewPager> bitmapViewReference;
-        private CardQueue deck;
-        private Context mContext;
-
-        public BitmapGetterTask(ViewPager viewPager) {
-            //This view has to be a weak reference because it can be garbage collected
-            //before the process has reached onPostExecute. If the user leaves the app
-            //before doInBackground has completed the process is up for garbage collection.
-            bitmapViewReference = new WeakReference<ViewPager>(viewPager);
-        }
-
-        @Override
-        protected DeckImageAdapter doInBackground(Object... params) {
-            mContext = (Context)params[0];
-            deck = (CardQueue)params[1];
-            DeckImageAdapter adapter = new DeckImageAdapter(mContext, deck);
-            return adapter;
-        }
-
-        @Override
-        protected void onPostExecute(DeckImageAdapter deckImageAdapter) {
-            if(bitmapViewReference != null) {
-                //Dereferences the bitmapViewReference to return the original viewPager object
-                ViewPager viewPager = bitmapViewReference.get();
-
-                if(viewPager != null) {
-                    viewPager.setAdapter(deckImageAdapter);
-                }
-            }
-            super.onPostExecute(deckImageAdapter);
-        }
+        DeckImageAdapter adapter = new DeckImageAdapter(getActivity(), deck);
+        deckView.setAdapter(adapter);
     }
 }
