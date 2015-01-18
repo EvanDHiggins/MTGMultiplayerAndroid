@@ -11,12 +11,10 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by Evan on 1/8/2015.
@@ -31,7 +29,7 @@ public class CardQueue {
     private final String LOG_TAG =CardQueue.class.getSimpleName();
 
     AssetManager assetManager;
-    List<String> cardNamesList;
+    ArrayList<String> cardNamesList;
     String folderPath;
     Bitmap cardImage;
 
@@ -63,7 +61,7 @@ public class CardQueue {
         return cardNamesList;
     }
 
-    public void setDeckList(List<String> newCardNamesList) {
+    public void setDeckList(ArrayList<String> newCardNamesList) {
         cardNamesList = newCardNamesList;
     }
 

@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,7 +69,7 @@ public class DeckFragment extends Fragment{
         return deck.getCardNamesList();
     }
 
-    public void setDeckList(List<String> newDeckList) {
+    public void setDeckList(ArrayList<String> newDeckList) {
         deck.setDeckList(newDeckList);
     }
 

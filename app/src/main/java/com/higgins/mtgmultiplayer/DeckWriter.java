@@ -1,14 +1,9 @@
 package com.higgins.mtgmultiplayer;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.io.IOException;

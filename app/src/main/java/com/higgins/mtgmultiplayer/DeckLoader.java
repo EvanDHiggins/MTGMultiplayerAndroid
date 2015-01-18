@@ -3,16 +3,10 @@ package com.higgins.mtgmultiplayer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -69,7 +63,7 @@ public class DeckLoader {
 
     private void loadDeck(int position) {
         String deckName = fileNames.get(position);
-        List<String> newDeck = loadDeckFromFile(deckName);
+        ArrayList<String> newDeck = loadDeckFromFile(deckName);
 
         deckFragment.setDeckList(newDeck);
         deckFragment.notifyDeckChanged();
@@ -78,9 +72,9 @@ public class DeckLoader {
 
     }
 
-    private List<String> loadDeckFromFile(String deckName) {
+    private ArrayList<String> loadDeckFromFile(String deckName) {
         final StringBuffer storedString = new StringBuffer();
-        List<String> newDeckList = null;
+        ArrayList<String> newDeckList = null;
         String deckString = null;
 
         try {
