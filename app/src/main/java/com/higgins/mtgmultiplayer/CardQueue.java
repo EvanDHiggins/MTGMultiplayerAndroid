@@ -5,7 +5,6 @@ import android.content.res.AssetManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.File;
@@ -67,9 +66,6 @@ public class CardQueue {
 
     public Bitmap getCardBitmap(int position) {
         Bitmap cardImage = null;
-//        BitmapGetterTask task = new BitmapGetterTask(assetManager, folderPath,
-//                cardNamesList.get(position));
-//        task.execute();
         try {
             InputStream inputS = assetManager.open(folderPath + File.separator +
                     cardNamesList.get(position));
@@ -95,53 +91,12 @@ public class CardQueue {
      *
      *  Prints out strings as verbose logs
      *
-     * @param array
      */
     private void printCardArray(String[] array) {
         if(array.length > 0) {
             for(String file : array) {
                 Log.v(LOG_TAG, file);
             }
-        }
-    }
-
-    private class BitmapGetterTask extends AsyncTask<Void, Void, Bitmap> {
-
-        AssetManager aManager;
-        String folderName;
-        String cardName;
-
-        public BitmapGetterTask(AssetManager assetManager, String folderPath, String cardName) {
-            aManager = assetManager;
-            if(aManager == null) {
-                Log.v(LOG_TAG, "AssetManager is null");
-            }
-            folderName = folderPath;
-            this.cardName = cardName;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            Bitmap cardImage = null;
-            try {
-                InputStream inputS = aManager.open(folderName + File.separator +
-                        cardName);
-                cardImage = BitmapFactory.decodeStream(inputS);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "IOException");
-                e.printStackTrace();
-            } finally {
-                if (cardImage == null) {
-                    Log.e(LOG_TAG, "Error, null cardImage");
-                }
-            }
-            return cardImage;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap cardBitmap) {
-            cardImage = cardBitmap;
         }
     }
 }
