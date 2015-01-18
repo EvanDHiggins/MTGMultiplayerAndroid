@@ -27,10 +27,10 @@ public class DeckFragment extends Fragment{
 
     private final String LOG_TAG = DeckFragment.class.getSimpleName();
 
-    String folderName;
-    CardQueue deck;
-    View rootView;
-    ViewPager deckView;
+    private String folderName;
+    private CardQueue deck;
+    private View rootView;
+    private ViewPager deckView;
 
     /**
      * Static constructor that assigns a folder name and returns a new

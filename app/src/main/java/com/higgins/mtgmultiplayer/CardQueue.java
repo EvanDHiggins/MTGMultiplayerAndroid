@@ -27,10 +27,9 @@ public class CardQueue {
 
     private final String LOG_TAG =CardQueue.class.getSimpleName();
 
-    AssetManager assetManager;
-    ArrayList<String> cardNamesList;
-    String folderPath;
-    Bitmap cardImage;
+    private AssetManager assetManager;
+    private ArrayList<String> cardNamesList;
+    private String folderPath;
 
     public CardQueue(Context c, String folderName) {
 

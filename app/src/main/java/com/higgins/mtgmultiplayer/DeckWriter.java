@@ -17,9 +17,9 @@ public class DeckWriter {
 
     private final String LOG_TAG = DeckWriter.class.getSimpleName();
 
-    Context thisContext;
-    DeckFragment deckFragment;
-    String deckTag;
+    private Context thisContext;
+    private DeckFragment deckFragment;
+    private String deckTag;
 
 
     public DeckWriter(Context c, DeckFragment deckFragment, String folderName) {

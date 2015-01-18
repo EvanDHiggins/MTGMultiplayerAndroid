@@ -11,8 +11,8 @@ public class DeckImageAdapter extends PagerAdapter {
 
     private final String LOG_TAG = DeckImageAdapter.class.getSimpleName();
 
-    Context context;
-    CardQueue deck;
+    private Context context;
+    private CardQueue deck;
 
     /**
      * Instances of DeckImageAdapter should be instantiated
