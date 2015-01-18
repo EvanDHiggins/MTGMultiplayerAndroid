@@ -103,13 +103,11 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 2:
-                DeckWriter deckWriter = new DeckWriter(this, getSupportFragmentManager());
-                deckWriter.saveDeck();
+                ((DeckFragment)fragmentManager.findFragmentById(R.id.container)).saveDeck();
                 break;
 
             case 3:
-                DeckLoader deckLoader = new DeckLoader(this, getSupportFragmentManager());
-                deckLoader.loadDeckDialog();
+                ((DeckFragment)fragmentManager.findFragmentById(R.id.container)).loadDeck();
                 break;
         }
     }

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,6 +88,8 @@ public class CardQueue {
     }
 
     public void remove(int position) {
+        Log.v(LOG_TAG, "position == " + Integer.toString(position));
+        Log.v(LOG_TAG, "size == " + cardNamesList.size());
         cardNamesList.remove(position);
     }
 

@@ -62,12 +62,34 @@ public class DeckFragment extends Fragment{
         return deck;
     }
 
+    public ViewPager getDeckView() {
+        return deckView;
+    }
+
     public List<String> getDeckAsList() {
         return deck.getCardNamesList();
     }
 
     public void setDeckList(List<String> newDeckList) {
         deck.setDeckList(newDeckList);
+    }
+
+    public void notifyDeckChanged() {
+        deckView.getAdapter().notifyDataSetChanged();
+    }
+
+    public void resetCurrentItem() {
+        deckView.setCurrentItem(0);
+    }
+
+    public void saveDeck() {
+        DeckWriter writer = new DeckWriter(getActivity(), this);
+        writer.saveDeck();
+    }
+
+    public void loadDeck() {
+        DeckLoader loader = new DeckLoader(getActivity(), this);
+        loader.loadDeckDialog();
     }
 
     /**

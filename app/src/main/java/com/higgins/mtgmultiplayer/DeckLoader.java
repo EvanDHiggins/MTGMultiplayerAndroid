@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,30 +28,19 @@ public class DeckLoader {
     final private String LOG_TAG = DeckLoader.class.getSimpleName();
 
     private Context thisContext;
-    private FragmentManager fragmentManager;
+    private List<String> fileNames;
+    private DeckFragment deckFragment;
 
-    public DeckLoader(Context c, FragmentManager f) {
+    public DeckLoader(Context c, DeckFragment f) {
         thisContext = c;
-        fragmentManager = f;
+        deckFragment = f;
     }
 
-//    private void loadDeck() {
-//        String deckName;
-//        List<String> deckList;
-//        //deckName = loadDeckDialog();
-//        deckList = loadDeckFromFile();
-//
-//        DeckFragment fragment = (DeckFragment) fragmentManager.findFragmentById(R.id.container);
-//        fragment.setDeckList(deckList);
-//        ViewPager deckView = (ViewPager) findViewById(R.id.deck_view_pager);
-//        PagerAdapter adapter = deckView.getAdapter();
-//        adapter.notifyDataSetChanged();
-//        deckView.setCurrentItem(0);
-//    }
-
     public void loadDeckDialog() {
-        Log.v(LOG_TAG, "LOG TEST");
-        List<String> fileNames = Arrays.asList(thisContext.fileList());
+        fileNames = Arrays.asList(thisContext.fileList());
+
+        //Removes any files that don't have the proper prefix, and removes the prefix
+        //From those which have it.
         for(String file : fileNames) {
             if(file.startsWith(thisContext.getString(R.string.saved_deck_prefix))) {
                 int index = fileNames.indexOf(file);
@@ -58,47 +50,65 @@ public class DeckLoader {
             }
             Log.v(LOG_TAG, file);
         }
+        Collections.sort(fileNames);
+        //Conversion to charSequence is due to alertBuilder.setItems parameters
         CharSequence[] fileCharSeqs = fileNames.toArray(new CharSequence[fileNames.size()]);
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(thisContext);
         alertBuilder.setTitle("Load Deck");
+
+        //Creates list dialog of
         alertBuilder.setItems(fileCharSeqs, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                loadDeck(which);
             }
         });
         alertBuilder.show();
 
     }
 
-//    private List<String> loadDeckFromFile() {
-//        FileInputStream fis;
-//        final StringBuffer storedString = new StringBuffer();
-//        List<String> newDeckList = null;
-//        String deckString = null;
-//
-//        try {
-//            FileInputStream openFile = openFileInput("NewDeck6.txt");
-//            InputStreamReader reader = new InputStreamReader(openFile);
-//            BufferedReader buffReader = new BufferedReader(reader);
-//
-//            String strLine;
-//
-//            while((strLine = buffReader.readLine()) != null) {
-//                storedString.append(strLine + ",");
-//            }
-//            deckString = storedString.toString();
-//            deckString.replace("\n", "");
-//
-//            buffReader.close();
-//            openFile.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if(deckString != null) {
-//            newDeckList = Arrays.asList(deckString.split("\\s*,\\s*"));
-//        }
-//        return newDeckList;
-//    }
+    private void loadDeck(int position) {
+        String deckName = fileNames.get(position);
+        List<String> newDeck = loadDeckFromFile(deckName);
+
+        deckFragment.setDeckList(newDeck);
+        deckFragment.notifyDeckChanged();
+
+        deckFragment.resetCurrentItem();
+
+    }
+
+    private List<String> loadDeckFromFile(String deckName) {
+        final StringBuffer storedString = new StringBuffer();
+        List<String> newDeckList = null;
+        String deckString = null;
+
+        try {
+            FileInputStream openFile = thisContext.openFileInput(
+                    thisContext.getString(R.string.saved_deck_prefix) + deckName);
+            InputStreamReader reader = new InputStreamReader(openFile);
+            BufferedReader buffReader = new BufferedReader(reader);
+
+            String strLine;
+
+            while((strLine = buffReader.readLine()) != null) {
+                storedString.append(strLine + ",");
+            }
+            deckString = storedString.toString();
+            deckString.replace(thisContext.getString(R.string.saved_deck_delimiter), "");
+
+            buffReader.close();
+            openFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(deckString != null) {
+            newDeckList = new ArrayList<>(Arrays.asList(deckString.split("\\s*,\\s*")));
+            Log.e(LOG_TAG, "DeckString isn't null");
+        } else {
+            Log.e(LOG_TAG, "DeckString is null");
+        }
+        return newDeckList;
+    }
 
 }

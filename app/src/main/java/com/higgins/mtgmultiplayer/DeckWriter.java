@@ -23,15 +23,15 @@ public class DeckWriter {
     private final String LOG_TAG = DeckWriter.class.getSimpleName();
 
     Context thisContext;
-    FragmentManager fragmentManager;
+    DeckFragment deckFragment;
 
 
-    public DeckWriter(Context c, FragmentManager fragmentManager) {
+    public DeckWriter(Context c, DeckFragment deckFragment) {
         thisContext = c;
+        this.deckFragment = deckFragment;
 
         //The Activities fragment manager is needed to get the current
         //deck fragment so that the deck can be accessed and saved.
-        this.fragmentManager = fragmentManager;
     }
 
     /**
@@ -74,7 +74,6 @@ public class DeckWriter {
 
     private void writeDeckToDevice(String deckName) {
 
-        DeckFragment deckFragment = (DeckFragment)fragmentManager.findFragmentById(R.id.container);
         List<String> deckList = deckFragment.getDeckAsList();
 
         try {
