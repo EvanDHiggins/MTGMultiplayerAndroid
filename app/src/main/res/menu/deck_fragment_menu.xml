@@ -8,6 +8,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_ongoing"
+        android:title="@string/action_ongoing"
+        app:showAsActio="never" />
+
+    <item
         android:id="@+id/action_remove"
         android:title="@string/action_remove"
         app:showAsAction="never" />

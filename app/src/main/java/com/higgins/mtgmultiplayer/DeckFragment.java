@@ -32,10 +32,7 @@ public class DeckFragment extends Fragment{
     private View rootView;
     private ViewPager deckView;
 
-    /**
-     * Static constructor that assigns a folder name and returns a new
-     * DeckFragment
-     *
+    /** * Static constructor that assigns a folder name and returns a new * DeckFragment *
      * @param folderName: This is the assets subdirectory where images
      *                  are loaded from. "" would result in loading all images
      *                  in the assets directory, while "archenemy" results in

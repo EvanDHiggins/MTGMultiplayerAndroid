@@ -30,5 +30,6 @@
         <string name="action_shuffle">Shuffle</string>
         <string name="action_settings">Settings</string>
         <string name="action_reset">Reset</string>
+        <string name="aciton_ongoing">Ongoing</string>
 
     </resources>
